@@ -31,7 +31,7 @@ export default async function AdminFleet() {
       <div className="bg-surface border border-outline shadow-soft rounded-xl overflow-hidden">
         {cars.length === 0 ? (
           <div className="p-xl text-center text-on-surface-variant font-utility-label text-[13px]">
-            No vehicles in the fleet. Click "Add Vehicle" to register one.
+            No vehicles in the fleet. Click &quot;Add Vehicle&quot; to register one.
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -50,6 +50,7 @@ export default async function AdminFleet() {
                 {cars.map((car) => (
                   <tr key={car.id} className="hover:bg-surface-variant/50 transition-colors">
                     <td className="p-md">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={car.images[0]} alt={car.name} className="w-12 h-12 object-cover rounded-md bg-surface-variant border border-outline" />
                     </td>
                     <td className="p-md">

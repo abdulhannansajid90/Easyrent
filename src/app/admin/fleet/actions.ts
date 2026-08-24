@@ -1,9 +1,9 @@
 "use server";
 
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Prisma } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { put } from "@vercel/blob";
+
 
 const prisma = new PrismaClient();
 
@@ -135,7 +135,7 @@ export async function updateCar(id: string, formData: FormData) {
   const imageFiles = formData.getAll("images") as File[];
   const imageUrls = await saveFilesLocally(imageFiles);
 
-  const updateData: any = {
+  const updateData: Prisma.CarUpdateInput = {
     name, type, transmission, fuelType, seatingCapacity, baggageCapacity, fuelEfficiency, licensePlate,
     pricePerDay, pricePerWeek, pricePerMonth, description,
     inclusions: inclusions.join(","),

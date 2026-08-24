@@ -29,10 +29,10 @@ export default function CarForm({ initialData }: { initialData?: Car }) {
       }
       router.push("/admin/fleet");
       router.refresh();
-    } catch (err: any) {
+    } catch (err) {
       console.error(err);
       setLoading(false);
-      alert(err.message || "Failed to save car.");
+      alert((err as Error).message || "Failed to save car.");
     }
   };
 
