@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import RentalAgreementClient from "./[id]/RentalAgreementClient";
 
 export default function SampleAgreementPage() {

@@ -2,7 +2,7 @@
 
 import { PrismaClient, Prisma } from "@prisma/client";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 
 
 const prisma = new PrismaClient();

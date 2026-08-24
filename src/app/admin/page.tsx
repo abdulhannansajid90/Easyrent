@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import { getDashboardStats } from "./actions";
 import { formatPrice } from "@/lib/currency";
 import Link from "next/link";
