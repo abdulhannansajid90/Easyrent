@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Car {
+  id              String   @id @default(uuid())
+  name            String
+  type            String   // Sedan, SUV, Hatchback, Van
+  transmission    String   // Auto, Manual
+  fuelType        String   // Petrol, Hybrid, Diesel, EV
+  seatingCapacity Int
+  baggageCapacity Int
+  fuelEfficiency  String
+  licensePlate    String   @unique
+  pricePerDay     Float
+  pricePerWeek    Float
+  pricePerMonth   Float
+  images          String   // Comma-separated URLs
+  inclusions      String   // Comma-separated
+  exclusions      String   // Comma-separated
+  description     String
+  status          String   // Available, Rented, Removed
+  currentRentalId String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  rentals         Rental[] @relation("CarRentals")
+}
+
+model Rental {
+  id              String   @id @default(uuid())
+  carId           String
+  customerName    String
+  customerCNIC    String
+  customerAge     Int
+  customerPhone   String
+  pickupCity      String
+  tripType        String   // Intra-city, Inter-city
+  service         String   // WithDriver, SelfDrive
+  pickupDateTime  DateTime
+  returnDateTime  DateTime
+  durationHours   Int
+  totalAmount     Float
+  status          String   // Active, Completed, Cancelled
+  agreementPdfUrl String?
+  companyName     String   @default("Easy Rent")
+  companyId       String
+  createdAt       DateTime @default(now())
+
+  car             Car      @relation("CarRentals", fields: [carId], references: [id])
+  transactions    WalletTransaction[]
+}
+
+model WalletTransaction {
+  id              String   @id @default(uuid())
+  rentalId        String
+  amountCredited  Float
+  createdAt       DateTime @default(now())
+
+  rental          Rental   @relation(fields: [rentalId], references: [id])
+}
+
+model AdminUser {
+  id              String   @id @default(uuid())
+  username        String   @unique
+  passwordHash    String
+}
