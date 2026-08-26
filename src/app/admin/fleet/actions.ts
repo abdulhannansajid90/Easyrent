@@ -3,6 +3,7 @@
 import { PrismaClient, Prisma } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { put } from '@vercel/blob';
 
 
 const prisma = new PrismaClient();
@@ -37,9 +38,6 @@ export async function updateCarStatus(carId: string, status: string) {
   }
 }
 
-import { writeFile, mkdir } from 'fs/promises';
-import path from 'path';
-
 export async function deleteCar(carId: string) {
   await checkAuth();
   
@@ -59,15 +57,13 @@ export async function deleteCar(carId: string) {
 
 async function saveFilesLocally(files: File[]): Promise<string[]> {
   const imageUrls: string[] = [];
-  const uploadDir = path.join(process.cwd(), 'public/uploads');
-  await mkdir(uploadDir, { recursive: true });
 
   for (const file of files) {
     if (file && file.size > 0) {
-      const buffer = Buffer.from(await file.arrayBuffer());
       const filename = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '')}`;
-      await writeFile(path.join(uploadDir, filename), buffer);
-      imageUrls.push(`/uploads/${filename}`);
+      // Upload to Vercel Blob storage (cloud file system)
+      const blob = await put(filename, file, { access: 'public' });
+      imageUrls.push(blob.url);
     }
   }
   return imageUrls;
