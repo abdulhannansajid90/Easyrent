@@ -6,10 +6,13 @@ import { ChevronDown, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { PrismaClient } from "@prisma/client";
 import FeaturedFleet from "@/components/FeaturedFleet";
+import { syncExpiredRentals } from "@/lib/syncRentals";
 
 const prisma = new PrismaClient();
 
 export default async function Home() {
+  await syncExpiredRentals();
+
   const featuredCars = await prisma.car.findMany({
     take: 3,
     orderBy: { createdAt: "desc" },

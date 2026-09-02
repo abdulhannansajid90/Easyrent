@@ -1,12 +1,11 @@
 "use server";
 
-import { PrismaClient, Prisma } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { put } from '@vercel/blob';
-
-
-const prisma = new PrismaClient();
+import { syncExpiredRentals } from "@/lib/syncRentals";
+import { Prisma } from "@prisma/client";
 
 async function checkAuth() {
   const session = await getServerSession(authOptions);
@@ -17,6 +16,7 @@ async function checkAuth() {
 
 export async function getAdminCars() {
   await checkAuth();
+  await syncExpiredRentals();
   return prisma.car.findMany({
     orderBy: { createdAt: "desc" },
   });
