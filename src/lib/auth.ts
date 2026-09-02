@@ -8,7 +8,6 @@ const prisma = new PrismaClient();
 
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET || "fallback_secret_for_build_only",
-  trustHost: true,
   providers: [
     CredentialsProvider({
       name: "Admin Credentials",
