@@ -7,6 +7,7 @@ export default withAuth(
     return NextResponse.next();
   },
   {
+    secret: process.env.NEXTAUTH_SECRET || "fallback_secret_for_build_only",
     callbacks: {
       authorized: ({ req, token }) => {
         // Only require authentication for /admin routes (except /admin/login)
